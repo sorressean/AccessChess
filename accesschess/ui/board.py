@@ -3,34 +3,24 @@ from accesschess.core.pieces import registry
 
 
 class ChessBoard(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, menubar, game):
         super().__init__(parent)
         self.selected_piece = None
         self.selected_square = None
         self.buttons = {}
+        self.game = game
         self.create_board()
 
     def create_board(self):
         # Create an 8x8 grid for the chessboard
         grid_sizer = wx.GridSizer(8, 8, 0, 0)
         
-        initial_board = [
-            ['WR', 'WN', 'WB', 'WQ', 'WK', 'WB', 'WN', 'WR'],
-            ['WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP', 'WP'],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            ['BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP', 'BP'],
-            ['BR', 'BN', 'BB', 'BQ', 'BK', 'BB', 'BN', 'BR']
-        ]
-
+        initial_board = self.game.get_grid_mapping()
         # Build the board with alternating colors and assign pieces
         for row in range(8):
             for col in range(8):
                 square_id = (row, col)
-                piece_abbr = initial_board[row][col]
-                label = registry[piece_abbr].unicode_symbol if piece_abbr.strip() else ''
+                label = initial_board[row][col]
                 
                 # Create a button for each square
                 button = wx.Button(self, label=label, size=(50, 50))

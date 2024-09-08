@@ -12,5 +12,7 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=setup
 [Files]
 Source: "main.dist\*"; DestDir: "{app}"
+Source: "engines\*"; DestDir: "{app}\engines"
+
 [Icons]
 Name: "{group}\Access Chess"; Filename: "{app}\main.exe"
