@@ -1,6 +1,8 @@
 import wx
+
 from accesschess.ui import ChessBoard
 from accesschess.ui.dialogs import AIEngineOptionsDialog
+
 
 class AIGamePanel(ChessBoard):
     def __init__(self, parent, menu, game):

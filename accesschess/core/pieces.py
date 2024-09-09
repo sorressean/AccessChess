@@ -10,16 +10,16 @@
 
 # Registry of chess pieces
 registry = {
-    'WK': ChessPiece('White King', 'WK', '♔'),
-    'WQ': ChessPiece('White Queen', 'WQ', '♕'),
-    'WR': ChessPiece('White Rook', 'WR', '♖'),
-    'WB': ChessPiece('White Bishop', 'WB', '♗'),
-    'WN': ChessPiece('White Knight', 'WN', '♘'),
-    'WP': ChessPiece('White Pawn', 'WP', '♙'),
-    'BK': ChessPiece('Black King', 'BK', '♚'),
-    'BQ': ChessPiece('Black Queen', 'BQ', '♛'),
-    'BR': ChessPiece('Black Rook', 'BR', '♜'),
-    'BB': ChessPiece('Black Bishop', 'BB', '♝'),
-    'BN': ChessPiece('Black Knight', 'BN', '♞'),
-    'BP': ChessPiece('Black Pawn', 'BP', '♟')
+    "WK": ChessPiece("White King", "WK", "♔"),
+    "WQ": ChessPiece("White Queen", "WQ", "♕"),
+    "WR": ChessPiece("White Rook", "WR", "♖"),
+    "WB": ChessPiece("White Bishop", "WB", "♗"),
+    "WN": ChessPiece("White Knight", "WN", "♘"),
+    "WP": ChessPiece("White Pawn", "WP", "♙"),
+    "BK": ChessPiece("Black King", "BK", "♚"),
+    "BQ": ChessPiece("Black Queen", "BQ", "♛"),
+    "BR": ChessPiece("Black Rook", "BR", "♜"),
+    "BB": ChessPiece("Black Bishop", "BB", "♝"),
+    "BN": ChessPiece("Black Knight", "BN", "♞"),
+    "BP": ChessPiece("Black Pawn", "BP", "♟"),
 }

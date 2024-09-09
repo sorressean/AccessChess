@@ -1,10 +1,12 @@
-wxpython
+autoflake
+black
 chess
-nuitka
-pyfmodex
 flake8
+isort
+nuitka
 pre-commit
 pre-commit-hooks
+pyfmodex
 pyupgrade
 ujson
-
+wxpython

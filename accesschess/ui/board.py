@@ -1,5 +1,4 @@
 import wx
-from accesschess.core.pieces import registry
 
 
 class ChessBoard(wx.Panel):
@@ -14,24 +13,24 @@ class ChessBoard(wx.Panel):
     def create_board(self):
         # Create an 8x8 grid for the chessboard
         grid_sizer = wx.GridSizer(8, 8, 0, 0)
-        
+
         initial_board = self.game.get_grid_mapping()
         # Build the board with alternating colors and assign pieces
         for row in range(8):
             for col in range(8):
                 square_id = (row, col)
                 label = initial_board[row][col]
-                
+
                 # Create a button for each square
                 button = wx.Button(self, label=label, size=(50, 50))
                 if (row + col) % 2 == 0:
-                    button.SetBackgroundColour(wx.Colour(240, 217, 181))  # Light squares
+                    button.SetBackgroundColour(wx.Colour(240, 217, 181))
                 else:
-                    button.SetBackgroundColour(wx.Colour(181, 136, 99))   # Dark squares
-                
+                    button.SetBackgroundColour(wx.Colour(181, 136, 99))
+
                 # Bind mouse events
                 button.Bind(wx.EVT_BUTTON, self.on_square_click)
-                
+
                 # Add button to grid and store it in buttons dict
                 grid_sizer.Add(button, 0, wx.EXPAND)
                 self.buttons[square_id] = button
@@ -55,7 +54,7 @@ class ChessBoard(wx.Panel):
             if clicked_button.GetLabel():
                 self.selected_piece = clicked_button.GetLabel()
                 self.selected_square = clicked_square
-                clicked_button.SetLabel('')  # Remove the piece from the original square
+                clicked_button.SetLabel("")
         else:
             # Move the selected piece to the new square
             clicked_button.SetLabel(self.selected_piece)

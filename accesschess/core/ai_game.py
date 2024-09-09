@@ -1,9 +1,12 @@
-from .game import Game
 import chess
 import chess.engine
 
+from .game import Game
+
+
 class AIGame(Game):
-    stockfish_path="engines/stockfish-fast.exe"
+    stockfish_path = "engines/stockfish-fast.exe"
+
     def __init__(self):
         super().__init__()
 
@@ -15,4 +18,3 @@ class AIGame(Game):
         if self.engine is None:
             return {}
         return self.engine.options
-    

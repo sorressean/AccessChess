@@ -1,8 +1,9 @@
 import wx
 
+
 class AIEngineOptionsDialog(wx.Dialog):
     def __init__(self, parent, game):
-        super(AIEngineOptionsDialog, self).__init__(parent, title="Engine Options", size=(400, 600))
+        super().__init__(parent, title="Engine Options", size=(400, 600))
         self.game = game
         self.options_controls = {}  # Store the input controls for each option
 
@@ -13,23 +14,24 @@ class AIEngineOptionsDialog(wx.Dialog):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Create a grid sizer for the options
-        grid_sizer = wx.FlexGridSizer(rows=len(options), cols=2, hgap=10, vgap=10)
+        rows = len(options)
+        grid_sizer = wx.FlexGridSizer(rows, cols=2, hgap=10, vgap=10)
         grid_sizer.AddGrowableCol(1, 1)  # Make the input fields expand
 
-        # Iterate through the options and create input controls based on their types
+        # Iterate through the options and create input controls based on type
         for option_name, option_value in options.items():
             label = wx.StaticText(self, label=option_name)
             grid_sizer.Add(label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-            # Choose the appropriate control based on the type of the option value
+            # Choose the appropriate control based on the type of the option
             if isinstance(option_value, bool):
                 control = wx.CheckBox(self)
                 control.SetValue(option_value)
             elif isinstance(option_value, int):
-                control = wx.SpinCtrl(self, value=str(option_value), min=0, max=100)  # Adjust range as needed
+                control = wx.SpinCtrl(self, value=str(option_value))
             elif isinstance(option_value, float):
                 control = wx.TextCtrl(self, value=str(option_value))
-            else:  # Treat everything else as string
+            else:
                 control = wx.TextCtrl(self, value=str(option_value))
 
             grid_sizer.Add(control, 1, wx.EXPAND | wx.ALL, 5)
@@ -54,7 +56,7 @@ class AIEngineOptionsDialog(wx.Dialog):
             elif isinstance(control, wx.SpinCtrl):
                 new_value = control.GetValue()
             elif isinstance(control, wx.TextCtrl):
-                new_value = control.GetValue()  # For floats and strings, you might need further parsing
+                new_value = control.GetValue()
                 try:
                     # Try converting to float if needed
                     new_value = float(new_value)

@@ -1,6 +1,7 @@
 import os
-from pyfmodex.system import System
+
 from pyfmodex.flags import MODE
+from pyfmodex.system import System
 
 
 class SoundManager:
@@ -18,14 +19,13 @@ class SoundManager:
         Loads a sound from the base path and stores it in the cache.
         Appends '.mp3' to the sound_name and loads it if not already loaded.
         """
-        sound_path = os.path.join(self.base_path, f"{sound_name}.mp3")
+        file = os.path.join(self.base_path, f"{sound_name}.mp3")
 
         if sound_name not in self.sounds:
-            if not os.path.exists(sound_path):
-                raise FileNotFoundError(f"Sound file not found: {sound_path}")
-
+            if not os.path.exists(file):
+                raise FileNotFoundError(f"{file}")
             # Load the sound and store it in the cache
-            sound = self.fmod_system.create_sound(sound_path, mode=MODE.DEFAULT)
+            sound = self.fmod_system.create_sound(file, mode=MODE.DEFAULT)
             self.sounds[sound_name] = sound
 
     def play_sound(self, sound_name):
@@ -38,7 +38,7 @@ class SoundManager:
 
         # Play the sound
         self.fmod_system.play_sound(self.sounds[sound_name])
-        
+
         # Update FMOD system to keep audio playing smoothly
         self.fmod_system.update()
 
@@ -47,5 +47,6 @@ class SoundManager:
         Stops all currently playing sounds.
         """
         self.fmod_system.mixer_stop_all()
+
 
 sound = SoundManager()
