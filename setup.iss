@@ -13,6 +13,9 @@ OutputBaseFilename=setup
 [Files]
 Source: "main.dist\*"; DestDir: "{app}"
 Source: "engines\*"; DestDir: "{app}\engines"
+Source: "assets\sounds\*"; DestDir: "{app}\assets\sounds"
+Source: "fmodL.dll"; DestDir: "{app}"
+Source: "fmod.dll"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\Access Chess"; Filename: "{app}\main.exe"

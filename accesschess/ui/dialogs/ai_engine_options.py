@@ -2,7 +2,7 @@ import wx
 
 class AIEngineOptionsDialog(wx.Dialog):
     def __init__(self, parent, game):
-        super(EngineOptionsDialog, self).__init__(parent, title="Engine Options", size=(400, 600))
+        super(AIEngineOptionsDialog, self).__init__(parent, title="Engine Options", size=(400, 600))
         self.game = game
         self.options_controls = {}  # Store the input controls for each option
 

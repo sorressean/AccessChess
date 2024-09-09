@@ -1,3 +1,10 @@
 wxpython
 chess
 nuitka
+pyfmodex
+flake8
+pre-commit
+pre-commit-hooks
+pyupgrade
+ujson
+

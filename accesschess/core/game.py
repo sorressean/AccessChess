@@ -2,6 +2,7 @@
 Main game object.
 """
 import chess
+from .sound_manager import sound
 
 class Game:
     def __init__(self):
@@ -26,3 +27,6 @@ class Game:
 
     def get_options(self):
         return {}
+    def on_new_game(self):
+        #play a new game sound.
+        sound.play_sound('new_game')

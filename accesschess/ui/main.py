@@ -30,6 +30,7 @@ class MainFrame(wx.Frame):
         sizer.Add(self.board_panel, 1, wx.EXPAND)
         self.SetSizer(sizer)
         self.Layout()  # Make sure the layout refreshes to show the new panel
+        self.game.on_new_game()
         self.Centre()
 
     def create_menubar(self):
