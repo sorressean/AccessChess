@@ -3,7 +3,7 @@ Factory that links the panel up with the games that they belong to.
 """
 
 from accesschess.core import AIGame
-from accesschess.ui.boards import AIGamePanel
+from accesschess.ui.boards.ai_game_panel import AIGamePanel
 
 registry = {
     "AI Game": (AIGame, AIGamePanel),

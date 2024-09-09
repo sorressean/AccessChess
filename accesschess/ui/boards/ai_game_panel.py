@@ -1,6 +1,6 @@
 import wx
 
-from accesschess.ui import ChessBoard
+from accesschess.ui.board import ChessBoard
 from accesschess.ui.dialogs import AIEngineOptionsDialog
 
 
