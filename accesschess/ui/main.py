@@ -1,13 +1,13 @@
 import wx
 
 from .component_factory import build_components
+from .dialogs import AIEngineOptionsDialog
 
 
 class MainFrame(wx.Frame):
     def __init__(self, *args, **kw):
         self.game = None
         self.board_panel = None
-        self.game_menu = None  # Track the game-specific menu
         super().__init__(*args, **kw)
         self.SetTitle("Access Chess")
         self.SetSize((600, 600))
@@ -18,14 +18,9 @@ class MainFrame(wx.Frame):
         if self.board_panel:
             self.board_panel.Destroy()
             self.board_panel = None
-            # Remove the existing game menu if any
-        self.clear_game_menu()
-
-        self.game_menu = wx.Menu()
-        game, panel = build_components(game_name, self, self.game_menu)
+        game, panel = build_components(game_name, self)
         self.game = game
         self.board_panel = panel
-        self.GetMenuBar().Append(self.game_menu, "&Game")
         # Create a sizer for layout management
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.board_panel, 1, wx.EXPAND)
@@ -49,26 +44,30 @@ class MainFrame(wx.Frame):
         # Exit option
         exit_item = wx.MenuItem(file_menu, wx.ID_EXIT, "Exit\tCtrl+Q")
         file_menu.Append(exit_item)
-
-        # Bind the events to methods
+        game_menu = wx.Menu()
+        OPTIONS_ID = wx.NewIdRef()
+        options = wx.MenuItem(game_menu, OPTIONS_ID, "&Options")
+        game_menu.Append(options)
+        self.Bind(wx.EVT_MENU, self.on_game_options, id=OPTIONS_ID)
         self.Bind(wx.EVT_MENU, self.on_new_ai_game, new_ai_game)
         self.Bind(wx.EVT_MENU, self.on_exit, exit_item)
 
         menubar.Append(file_menu, "&File")
+        menubar.Append(game_menu, "&Game")
         self.SetMenuBar(menubar)
 
-    def clear_game_menu(self):
-        """
-        Clears the game-specific menu if it exists.
-        """
-        if self.game_menu:
-            menubar = self.GetMenuBar()
-            menubar.Remove(menubar.FindMenu(self.game_menu.GetTitle()))
-            self.game_menu = None
-
     def on_new_ai_game(self, event):
+        print("on new.")
         # Handle starting a new AI game
         self.create_board("AI Game")
 
     def on_exit(self, event):
         self.Close()
+
+    def on_game_options(self, event):
+        if self.game is None:
+            flags = wx.OK | wx.ICON_INFORMATION
+            wx.MessageBox("No game loaded.", "ERROR", flags)
+            return
+        dialog = AIEngineOptionsDialog(self, self.game)
+        dialog.ShowModal()

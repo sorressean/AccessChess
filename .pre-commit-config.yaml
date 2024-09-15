@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
       - id: check-ast
       - id: check-docstring-first
@@ -50,5 +50,5 @@ repos:
         language: system
         types: [ python ]
         args:
-          - "--ignore=DAR101,DAR201,DAR301,DAR401,B008,S101,TC002,TC003"
+          - "--ignore=DAR101,DAR201,DAR301,DAR401,B008,S101,TC002,TC003 --max-line-length=120"
         files: \.py$

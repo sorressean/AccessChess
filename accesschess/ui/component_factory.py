@@ -10,10 +10,10 @@ registry = {
 }
 
 
-def build_components(name, parent, menu):
+def build_components(name, parent):
     game, panel = registry[name]
     # create the game based on the object
     game = game()
     # create the panel based on the object
-    panel = panel(parent, menu, game)
+    panel = panel(parent, game)
     return game, panel

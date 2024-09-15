@@ -2,7 +2,7 @@ import wx
 
 
 class ChessBoard(wx.Panel):
-    def __init__(self, parent, menubar, game):
+    def __init__(self, parent, game):
         super().__init__(parent)
         self.selected_piece = None
         self.selected_square = None

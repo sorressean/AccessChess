@@ -4,11 +4,13 @@ import wx
 class AIEngineOptionsDialog(wx.Dialog):
     def __init__(self, parent, game):
         super().__init__(parent, title="Engine Options", size=(400, 600))
+        print("show dialog.")
         self.game = game
         self.options_controls = {}  # Store the input controls for each option
 
         # Retrieve engine options
         options = self.game.get_options()
+        print(options)
 
         # Initialize the sizer for layout
         main_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -44,6 +46,7 @@ class AIEngineOptionsDialog(wx.Dialog):
 
         self.SetSizer(main_sizer)
         self.Layout()
+        self.Center()
 
         # Bind events
         self.Bind(wx.EVT_BUTTON, self.on_ok, id=wx.ID_OK)
