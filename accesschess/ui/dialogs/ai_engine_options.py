@@ -1,5 +1,7 @@
 import wx
 
+from accesschess.core.options import OptionType
+
 
 class AIEngineOptionsDialog(wx.Dialog):
     def __init__(self, parent, game):
@@ -7,37 +9,37 @@ class AIEngineOptionsDialog(wx.Dialog):
         print("show dialog.")
         self.game = game
         self.options_controls = {}  # Store the input controls for each option
-
         # Retrieve engine options
         options = self.game.get_options()
         print(options)
-
         # Initialize the sizer for layout
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-
         # Create a grid sizer for the options
         rows = len(options)
         grid_sizer = wx.FlexGridSizer(rows, cols=2, hgap=10, vgap=10)
         grid_sizer.AddGrowableCol(1, 1)  # Make the input fields expand
 
         # Iterate through the options and create input controls based on type
-        for option_name, option_value in options.items():
-            label = wx.StaticText(self, label=option_name)
+        for option in options:
+            label = wx.StaticText(self, label=option.name)
             grid_sizer.Add(label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-            # Choose the appropriate control based on the type of the option
-            if isinstance(option_value, bool):
+            control = None
+            # Create controls based on the type of option
+            if option.type == OptionType.Boolean:
                 control = wx.CheckBox(self)
-                control.SetValue(option_value)
-            elif isinstance(option_value, int):
-                control = wx.SpinCtrl(self, value=str(option_value))
-            elif isinstance(option_value, float):
-                control = wx.TextCtrl(self, value=str(option_value))
-            else:
-                control = wx.TextCtrl(self, value=str(option_value))
+                control.SetValue(option.metadata.get("default", False))
+            elif option.type == OptionType.Number:
+                control = wx.SpinCtrl(self, value=str(option.metadata.get("default", 0)))
+                control.SetRange(option.metadata.get("min", 0), option.metadata.get("max", 100))
+            elif option.type == OptionType.String:
+                control = wx.TextCtrl(self, value=option.metadata.get("default", ""))
 
-            grid_sizer.Add(control, 1, wx.EXPAND | wx.ALL, 5)
-            self.options_controls[option_name] = control
+            # Add the control to the sizer and keep track of it
+            if control:
+                grid_sizer.Add(control, 1, wx.EXPAND | wx.ALL, 5)
+                self.options_controls[option.name] = control
+
         main_sizer.Add(grid_sizer, 1, wx.EXPAND | wx.ALL, 10)
 
         # Add Ok and Cancel buttons
@@ -60,12 +62,8 @@ class AIEngineOptionsDialog(wx.Dialog):
                 new_value = control.GetValue()
             elif isinstance(control, wx.TextCtrl):
                 new_value = control.GetValue()
-                try:
-                    # Try converting to float if needed
-                    new_value = float(new_value)
-                except ValueError:
-                    pass  # Leave it as string if conversion fails
 
-            # Set the new value for the option
+            # Set the new value for the option in the game
             self.game.set_option(option_name, new_value)
+
         self.EndModal(wx.ID_OK)
