@@ -6,6 +6,7 @@ isort
 nuitka
 pre-commit
 pre-commit-hooks
+psutil
 pyfmodex
 pyupgrade
 ujson

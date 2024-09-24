@@ -3,7 +3,7 @@ import wx
 from accesschess.broker import broker
 
 from .component_factory import build_components
-from .dialogs import AIEngineOptionsDialog
+from .dialogs import AIEngineOptionsDialog, MetricsDialog
 
 
 class MainFrame(wx.Frame):
@@ -52,6 +52,10 @@ class MainFrame(wx.Frame):
         options = wx.MenuItem(game_menu, OPTIONS_ID, "&Options")
         game_menu.Append(options)
         self.Bind(wx.EVT_MENU, self.on_game_options, id=OPTIONS_ID)
+        METRICS_ID = wx.NewIdRef()
+        metrics = wx.MenuItem(game_menu, METRICS_ID, "&Metrics")
+        game_menu.Append(metrics)
+        self.Bind(wx.EVT_MENU, self.on_metrics, id=METRICS_ID)
         self.Bind(wx.EVT_MENU, self.on_new_ai_game, new_ai_game)
         self.Bind(wx.EVT_MENU, self.on_exit, exit_item)
 
@@ -72,4 +76,8 @@ class MainFrame(wx.Frame):
             wx.MessageBox("No game loaded.", "ERROR", flags)
             return
         dialog = AIEngineOptionsDialog(self, self.game)
+        dialog.ShowModal()
+
+    def on_metrics(self, event):
+        dialog = MetricsDialog(self)
         dialog.ShowModal()
