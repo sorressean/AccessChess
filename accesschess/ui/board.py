@@ -12,58 +12,48 @@ class ChessBoard(wx.Panel):
 
         self.captured_white_pieces = []  # Store captured white pieces
         self.captured_black_pieces = []  # Store captured black pieces
-
         self.create_ui()
 
     def create_ui(self):
-        # Main horizontal sizer
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Left column for captured white pieces
-        self.white_captured_panel = wx.Panel(self, size=(100, 400))
         white_captured_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.white_captured_label = wx.StaticText(self.white_captured_panel, label="Captured White Pieces")
-        white_captured_sizer.Add(self.white_captured_label, 0, wx.CENTER | wx.TOP, 10)
-        self.white_captured_list = wx.ListBox(self.white_captured_panel, size=(80, 300))
+        white_captured_label = wx.StaticText(self, label="Captured White Pieces")
+        white_captured_sizer.Add(white_captured_label, 0, wx.CENTER | wx.TOP, 10)
+        self.white_captured_list = wx.ListBox(self, size=(80, 300))
         white_captured_sizer.Add(self.white_captured_list, 1, wx.EXPAND | wx.ALL, 10)
-        self.white_captured_panel.SetSizer(white_captured_sizer)
+        main_sizer.Add(white_captured_sizer, 1, wx.EXPAND | wx.ALL, 10)
 
         # Right column for captured black pieces
-        self.black_captured_panel = wx.Panel(self, size=(100, 400))
         black_captured_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.black_captured_label = wx.StaticText(self.black_captured_panel, label="Captured Black Pieces")
-        black_captured_sizer.Add(self.black_captured_label, 0, wx.CENTER | wx.TOP, 10)
-        self.black_captured_list = wx.ListBox(self.black_captured_panel, size=(80, 300))
+        black_captured_label = wx.StaticText(self, label="Captured Black Pieces")
+        black_captured_sizer.Add(black_captured_label, 0, wx.CENTER | wx.TOP, 10)
+        self.black_captured_list = wx.ListBox(self, size=(80, 300))
         black_captured_sizer.Add(self.black_captured_list, 1, wx.EXPAND | wx.ALL, 10)
-        self.black_captured_panel.SetSizer(black_captured_sizer)
 
-        # Chessboard panel
-        chessboard_panel = wx.Panel(self)
         chessboard_sizer = wx.BoxSizer(wx.VERTICAL)
-
         # Top row with coordinates (a-h)
         top_coord_sizer = wx.BoxSizer(wx.HORIZONTAL)
         top_coord_sizer.AddSpacer(40)  # Space before the first column label
         for letter in "abcdefgh":
-            top_coord_sizer.Add(wx.StaticText(chessboard_panel, label=letter), 1, wx.CENTER)
+            top_coord_sizer.Add(wx.StaticText(self, label=letter), 1, wx.CENTER)
         chessboard_sizer.Add(top_coord_sizer, 0, wx.EXPAND)
 
         # Main grid for the chessboard
-        grid_sizer = wx.BoxSizer(wx.VERTICAL)
+        grid_sizer = wx.GridSizer(9, 8, 0, 0)
         initial_board = self.game.get_grid_mapping()
         font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)  # Set larger font for buttons
 
         for row in range(8):
             # Add left-side row numbers (1-8)
-            row_sizer = wx.BoxSizer(wx.HORIZONTAL)
-            row_label = wx.StaticText(chessboard_panel, label=str(8 - row))  # Row numbers (8 to 1)
-            row_sizer.Add(row_label, 0, wx.CENTER, wx.EXPAND)
-
+            row_label = wx.StaticText(self, label=str(8 - row))  # Row numbers (8 to 1)
+            grid_sizer.Add(row_label, 0, wx.EXPAND)
             # Build the chessboard grid with alternating colors and pieces
             for col in range(8):
                 square_id = (row, col)
                 label = initial_board[row][col]
-                button = wx.Button(chessboard_panel, label=label, size=(50, 50))
+                button = wx.Button(self, label=label, size=(50, 50))
                 button.SetFont(font)  # Increase font size
                 button.SetName(self.get_square_name(row, col))  # Set chess coordinate as name
                 # Set alternating square colors
@@ -73,19 +63,14 @@ class ChessBoard(wx.Panel):
                     button.SetBackgroundColour(wx.Colour(181, 136, 99))  # Dark square
                 # Bind button events
                 button.Bind(wx.EVT_BUTTON, self.on_square_click)
-                row_sizer.Add(button, wx.CENTER, wx.EXPAND)
+                grid_sizer.Add(button, 0, wx.EXPAND)
                 self.buttons[square_id] = button
-            grid_sizer.Add(row_sizer, 0, wx.EXPAND)
-
-        chessboard_sizer.Add(grid_sizer, 1, wx.EXPAND)
-
-        # Combine all components into the main sizer
-        main_sizer.Add(self.white_captured_panel, 0, wx.EXPAND | wx.ALL, 10)
-        main_sizer.Add(chessboard_panel, 1, wx.EXPAND | wx.ALL, 10)
-        main_sizer.Add(self.black_captured_panel, 0, wx.EXPAND | wx.ALL, 10)
-
+        chessboard_sizer.Add(grid_sizer, 0, wx.EXPAND | wx.ALL, 10)
+        main_sizer.Add(chessboard_sizer, 1, wx.EXPAND | wx.ALL, 10)
+        main_sizer.Add(black_captured_sizer, 1, wx.EXPAND | wx.ALL, 10)
         self.SetSizer(main_sizer)
         self.Layout()
+        self.Center()
 
     def get_square_name(self, row, col):
         # Create a chess-style coordinate system (a1, h8, etc.)
