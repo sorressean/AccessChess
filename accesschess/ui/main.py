@@ -1,12 +1,13 @@
 import wx
 
+from accesschess.broker import broker
+
 from .component_factory import build_components
 from .dialogs import AIEngineOptionsDialog
 
 
 class MainFrame(wx.Frame):
     def __init__(self, *args, **kw):
-        self.game = None
         self.board_panel = None
         super().__init__(*args, **kw)
         self.SetTitle("Access Chess")
@@ -19,14 +20,15 @@ class MainFrame(wx.Frame):
             self.board_panel.Destroy()
             self.board_panel = None
         game, panel = build_components(game_name, self)
-        self.game = game
+        broker.set_game(game)
+        broker.set_board(panel)
         self.board_panel = panel
         # Create a sizer for layout management
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.board_panel, 1, wx.EXPAND)
         self.SetSizer(sizer)
         self.Layout()  # Make sure the layout refreshes to show the new panel
-        self.game.on_new_game()
+        broker.on_new_game()
         self.Centre()
 
     def create_menubar(self):
@@ -45,6 +47,7 @@ class MainFrame(wx.Frame):
         exit_item = wx.MenuItem(file_menu, wx.ID_EXIT, "Exit\tCtrl+Q")
         file_menu.Append(exit_item)
         game_menu = wx.Menu()
+        # game options
         OPTIONS_ID = wx.NewIdRef()
         options = wx.MenuItem(game_menu, OPTIONS_ID, "&Options")
         game_menu.Append(options)
@@ -57,7 +60,6 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(menubar)
 
     def on_new_ai_game(self, event):
-        print("on new.")
         # Handle starting a new AI game
         self.create_board("AI Game")
 

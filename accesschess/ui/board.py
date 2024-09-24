@@ -2,14 +2,12 @@ import wx
 
 
 class ChessBoard(wx.Panel):
-    def __init__(self, parent, game):
+    def __init__(self, parent):
         super().__init__(parent)
         self.selected_piece = None
         self.selected_square = None
         self.buttons = {}
-        self.game = game
         self.focused_square = (0, 0)  # Track focused square for arrow key navigation
-
         self.captured_white_pieces = []  # Store captured white pieces
         self.captured_black_pieces = []  # Store captured black pieces
         self.create_ui()
@@ -31,6 +29,7 @@ class ChessBoard(wx.Panel):
         black_captured_sizer.Add(black_captured_label, 0, wx.CENTER | wx.TOP, 10)
         self.black_captured_list = wx.ListBox(self, size=(80, 300))
         black_captured_sizer.Add(self.black_captured_list, 1, wx.EXPAND | wx.ALL, 10)
+        # created the right column, but add it after the board.
 
         chessboard_sizer = wx.BoxSizer(wx.VERTICAL)
         # Top row with coordinates (a-h)
@@ -109,3 +108,6 @@ class ChessBoard(wx.Panel):
                 self.white_captured_list.Append(piece.upper())  # Append captured black piece to white's captured list
             else:
                 self.black_captured_list.Append(piece.lower())  # Append captured white piece to black's captured list
+
+    def on_new_game(self):
+        pass
