@@ -1,5 +1,7 @@
 import wx
 
+from accesschess.broker import broker
+
 
 class ChessBoard(wx.Panel):
     def __init__(self, parent):
@@ -11,6 +13,7 @@ class ChessBoard(wx.Panel):
         self.captured_white_pieces = []  # Store captured white pieces
         self.captured_black_pieces = []  # Store captured black pieces
         self.create_ui()
+        self.bind_events()
 
     def create_ui(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -41,7 +44,7 @@ class ChessBoard(wx.Panel):
 
         # Main grid for the chessboard
         grid_sizer = wx.GridSizer(9, 8, 0, 0)
-        initial_board = self.game.get_grid_mapping()
+        initial_board = broker.get_grid()
         font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)  # Set larger font for buttons
 
         for row in range(8):
@@ -70,6 +73,9 @@ class ChessBoard(wx.Panel):
         self.SetSizer(main_sizer)
         self.Layout()
         self.Center()
+
+    def bind_events(self):
+        self.Bind(wx.EVT_KEY_DOWN, self.on_key_down)
 
     def get_square_name(self, row, col):
         # Create a chess-style coordinate system (a1, h8, etc.)
@@ -111,3 +117,33 @@ class ChessBoard(wx.Panel):
 
     def on_new_game(self):
         pass
+
+    def is_event_movement(self, code):
+        """
+        Returns true if the code specified is a handlable movement event.
+        """
+        return code in [wx.WXK_UP, wx.WXK_DOWN, wx.WXK_LEFT, wx.WXK_RIGHT]
+
+    def should_process_movement(self, code):
+        """
+        Returns True if we can move with arrow keys.
+        Typically, this is only the case when we're focused on a game button.
+        We do not want to capture events in listboxes.
+        """
+        focused = wx.Window.FindFocus()
+        return isinstance(focused, wx.Button)
+
+    def handle_movement(self, code):
+        x, y = self.focused_square  # current coords we have focus on.
+        # left arrow
+        if code == wx.WXK_LEFT:
+            if x == 0:
+                broker.on_left_edge()
+                return True
+
+    def on_key_down(self, event):
+        code = event.GetKeyCode()
+        if self.is_event_movement(code) and self.should_process_movement(code):
+            if self.handle_movement(code):
+                # only skip the event if handle succeeds.
+                event.Skip()

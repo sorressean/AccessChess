@@ -20,3 +20,11 @@ class AbstractGame(ABC):
     @abstractmethod
     def on_new_game(self):
         pass
+
+    @abstractmethod
+    def on_left_edge(self):
+        pass
+
+    @abstractmethod
+    def on_top_edge(self):
+        pass

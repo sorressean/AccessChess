@@ -35,3 +35,9 @@ class Game:
     def on_new_game(self):
         # play a new game sound.
         sound.play_sound("new_game")
+
+    def on_left_edge(self):
+        sound.play_sound("edge_small")
+
+    def on_top_edge(self):
+        sound.play_sound("edge_small")

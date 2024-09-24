@@ -15,5 +15,5 @@ def build_components(name, parent):
     # create the game based on the object
     game = game()
     # create the panel based on the object
-    panel = panel(parent, game)
+    panel = panel(parent)
     return game, panel

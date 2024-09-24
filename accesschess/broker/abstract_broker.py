@@ -17,8 +17,27 @@ class AbstractBroker(ABC):
         """
 
     @abstractmethod
+    def get_grid(self):
+        """
+        Returns a grid of unicode pieces representing the game.
+        This is what the UI uses to draw itself.
+        """
+
+    @abstractmethod
     def on_new_game(self):
         """
         Notifies the game object and the panel of a new game beginning.
         Order of operations is to notify game first, then panel.
+        """
+
+    @abstractmethod
+    def on_left_edge(self):
+        """
+        Triggered when we hit the left edge using navigation.
+        """
+
+    @abstractmethod
+    def on_top_edge(self):
+        """
+        Triggered when we hit the top edge of the board using navigation.
         """
